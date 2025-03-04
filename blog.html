@@ -16,13 +16,29 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            opacity: 0; /* Initially hidden */
+            animation: fadeIn 1s ease-in-out forwards; /* Fade-in effect */
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .icon-link {
             align-self: flex-start;
             margin-bottom: 20px;
             transition: transform 0.2s ease;
+            animation: fadeIn 1s ease-in-out forwards;
         }
+
         .icon-link:hover {
             transform: scale(1.1);
         }
@@ -32,12 +48,12 @@
             font-weight: 700;
             text-align: center;
             margin-bottom: 20px;
+            animation: fadeIn 1.2s ease-in-out forwards;
         }
+
         h1:hover {
-            
             color: #ffffff;
             transition: color 0.3s ease;
-        
         }
 
         .blog-post {
@@ -47,15 +63,15 @@
             border-radius: 5px;
             width: 100%;
             max-width: 600px;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
         }
 
-        .blog-post h2 {
-            margin: 0 0 10px;
-        }
+        /* Delay each blog post animation for a staggered effect */
+        .blog-post:nth-child(1) { animation-delay: 0.3s; }
+        .blog-post:nth-child(2) { animation-delay: 0.6s; }
+        .blog-post:nth-child(3) { animation-delay: 0.9s; }
 
-        .blog-post p {
-            margin: 0;
-        }
     </style>
 </head>
 <body>
@@ -80,10 +96,11 @@
                 const response = await fetch('blog.json');
                 const posts = await response.json();
                 const blogContainer = document.getElementById('blog-container');
-                
-                posts.forEach(post => {
+
+                posts.forEach((post, index) => {
                     const postElement = document.createElement('div');
                     postElement.classList.add('blog-post');
+                    postElement.style.animationDelay = `${0.3 + index * 0.3}s`; // Stagger effect
                     postElement.innerHTML = `
                         <h2>${post.filename.replace('.md','')}</h2>
                         <p>${post.content}</p>
